@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <ul class="navbar navbar-nav">
+        <li>
+            <button (click)="onGetAllProjects()" class="btn btn-outline-info">All</button>
+        </li>
+    </ul>
+</nav>
+<div class="container">
+    <ng-container *ngIf="(project$ | async) as result" [ngSwitch]="result.dataState">
+        <ng-container *ngSwitchCase="DataStateEnum.LOADING">
+            Loading .....
+        </ng-container>
+        <ng-container *ngSwitchCase="DataStateEnum.ERROR">
+            <div class="alert-danger">
+                {{result.errorMessage}}
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="DataStateEnum.LOADED">
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+                <tr *ngFor="let p of result.data">
+                    <td>{{p.id}}</td>
+                    <td>{{p.name}}</td>
+                    <td>
+                        <button class="btn btn-danger" (click)="onDelete(p)">
+                <span class="fa fa-trash-o"></span>
+              </button>
+                    </td>
+                </tr>
+            </table>
+        </ng-container>
+    </ng-container>
+</div>
